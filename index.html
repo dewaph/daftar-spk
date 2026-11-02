@@ -24,7 +24,7 @@ input,select{width:100%;font:inherit;color:var(--text);background:var(--card);bo
 input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
 .count{color:var(--muted);font-size:13px;margin:4px 2px 10px}
 .tablewrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px}
-table{width:100%;border-collapse:collapse;min-width:700px}
+table{width:100%;border-collapse:collapse;min-width:860px}
 th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:var(--card);cursor:pointer;user-select:none;white-space:nowrap;position:sticky;top:0}
 th.on{color:var(--accent)}
@@ -43,6 +43,9 @@ mark{background:#ffd54a66;color:inherit;border-radius:3px}
 .tab.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
 .tab .n{font-size:12px;font-weight:600;background:var(--accent-soft);color:var(--accent);border-radius:99px;padding:1px 8px}
 td.pw{white-space:nowrap}
+.dk{display:none}
+table.lain .dk{display:table-cell}
+table.lain{min-width:1020px}
 .pb{display:inline-block;padding:2px 11px;border-radius:99px;font-size:13px;font-weight:600;line-height:1.5;background:hsl(var(--h) 80% 91%);color:hsl(var(--h) 65% 24%);border:1px solid hsl(var(--h) 60% 78%)}
 .pb+.pb{margin-left:4px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pb{background:hsl(var(--h) 38% 22%);color:hsl(var(--h) 85% 83%);border-color:hsl(var(--h) 38% 34%)}}
@@ -68,12 +71,16 @@ tbody tr:hover{background:var(--card)}
 tbody td{border:0;padding:0;white-space:normal}
 td.tgl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);padding-top:10px;border-top:1px solid var(--line)}
 td.tgl::before{content:"Tanggal"}
+td.lok{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);margin:-4px 0 10px}
+td.lok::before{content:"Lokasi"}
+table.lain td.dk{display:flex;align-items:center;gap:8px;font-size:13px;margin:-4px 0 10px}
+td.dk::before{content:"Dikerjakan"}
 td.pw::before{content:"Pengawas"}
 tbody td:nth-child(2){font-size:16px;font-weight:600;line-height:1.4;margin-bottom:10px}
 td.no{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:8px}
 td.no::before{content:"No SPK"}
 .chip{font-size:14px;font-weight:600;color:var(--text);background:var(--accent-soft);padding:5px 11px;border-radius:8px}
-td.tgl::before,td.pw::before{min-width:72px;font-size:12px;font-weight:400;color:var(--muted)}
+td.tgl::before,td.pw::before,td.lok::before,td.dk::before{min-width:80px;font-size:12px;font-weight:400;color:var(--muted)}
 td.pw{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;font-size:14px;font-weight:600;padding-top:8px}
 td.pw .pb{font-size:14px;padding:3px 12px}
 .pb+.pb{margin-left:0}
@@ -82,6 +89,7 @@ td.empty{display:block;text-align:center;padding:28px 8px}
 .pager button{flex:1;padding:12px 14px;font-size:15px}
 .pager .sub{flex:0 0 auto}
 }
+@media(max-width:639px){.tab{padding:10px 4px;font-size:14px;gap:5px}.tab .n{padding:1px 6px}}
 </style>
 </head>
 <body>
@@ -94,14 +102,15 @@ td.empty{display:block;text-align:center;padding:28px 8px}
     <button class="icon" id="theme" aria-label="Ganti tema">◐</button>
   </header>
   <div class="tabs" role="tablist">
-    <button class="tab on" role="tab" data-t="manika">SPK Manika <span class="n"></span></button>
-    <button class="tab" role="tab" data-t="bangunan">SPK Bangunan <span class="n"></span></button>
+    <button class="tab on" role="tab" data-t="manika">Manika <span class="n"></span></button>
+    <button class="tab" role="tab" data-t="bangunan">Bangunan <span class="n"></span></button>
+    <button class="tab" role="tab" data-t="lain">Lain-lain <span class="n"></span></button>
   </div>
   <div class="tools">
     <input id="q" type="search" placeholder="Cari jenis pekerjaan atau nomor SPK…" autocomplete="off">
     <select id="yr" aria-label="Filter tahun"></select>
     <select id="sd" aria-label="Urutan tanggal"><option value="-1">Tanggal: terbaru dulu</option><option value="1">Tanggal: terlama dulu</option></select>
-    <select id="sb" aria-label="Urut berdasarkan"><option value="0">Urut: Tanggal</option><option value="3">Urut: Pengawas</option><option value="2">Urut: No SPK</option><option value="1">Urut: Pekerjaan</option></select>
+    <select id="sb" aria-label="Urut berdasarkan"><option value="0">Urut: Tanggal</option><option value="3">Urut: Pengawas</option><option value="2">Urut: No SPK</option><option value="1">Urut: Pekerjaan</option><option value="4">Urut: Lokasi</option><option value="5" disabled hidden>Urut: Dikerjakan</option></select>
     <select id="pp" aria-label="Baris per halaman">
       <option value="25">25 per halaman</option><option value="50">50 per halaman</option><option value="100">100 per halaman</option>
     </select>
@@ -112,6 +121,8 @@ td.empty{display:block;text-align:center;padding:28px 8px}
       <thead><tr>
         <th data-k="2">No SPK <span class="ar"></span></th>
         <th data-k="1">Jenis Pekerjaan <span class="ar"></span></th>
+        <th data-k="4">Lokasi <span class="ar"></span></th>
+        <th data-k="5" class="dk">Dikerjakan <span class="ar"></span></th>
         <th data-k="0">Tanggal SPK <span class="ar"></span></th>
         <th data-k="3">Pengawas <span class="ar"></span></th>
       </tr></thead>
@@ -127,7 +138,7 @@ td.empty{display:block;text-align:center;padding:28px 8px}
 <script>
 const SUPABASE_URL="https://alnmjxyyfhkytwkwzpon.supabase.co";
 const SUPABASE_KEY="sb_publishable_DaL5YRZ7cIVN52tEiz3REw_u2s9Pu2g";
-const DATASETS={manika:[],bangunan:[]};
+const DATASETS={manika:[],bangunan:[],lain:[]};
 let DATA=DATASETS.manika,tab="manika";
 const $=id=>document.getElementById(id);
 const bulan=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
@@ -139,7 +150,7 @@ const pill=n=>`<span class="pb" style="--h:${hue(n)}">${hl(n)}</span>`;
 let sortK=0,sortDir=1,dateDir=-1,page=1,query="",year="";
 function setupYears(){const years=[...new Set(DATA.map(r=>r[0].slice(0,4)))].sort().reverse();
 $("yr").innerHTML='<option value="">Semua tahun</option>'+years.map(y=>`<option>${y}</option>`).join("");}
-function setTab(t){tab=t;DATA=DATASETS[t];query="";year="";page=1;sortK=0;sortDir=1;dateDir=-1;$("q").value="";$("sd").value="-1";$("sb").value="0";setupYears();
+function setTab(t){tab=t;DATA=DATASETS[t];document.querySelector("table").classList.toggle("lain",t==="lain");{const o=$("sb").querySelector('option[value="5"]');o.disabled=o.hidden=t!=="lain";}query="";year="";page=1;sortK=0;sortDir=1;dateDir=-1;$("q").value="";$("sd").value="-1";$("sb").value="0";setupYears();
 document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
 try{history.replaceState(null,"","#"+t)}catch(e){}render();}
 document.querySelectorAll(".tab").forEach(b=>{b.onclick=()=>setTab(b.dataset.t)});
@@ -151,12 +162,12 @@ function hl(t){
 }
 function render(){
   const q=query.toLowerCase();
-  let rows=DATA.filter(r=>(!year||r[0].startsWith(year))&&(!q||r[1].toLowerCase().includes(q)||r[2].toLowerCase().includes(q)||(r[3]||"").toLowerCase().includes(q)||fmt(r[0]).toLowerCase().includes(q)));
+  let rows=DATA.filter(r=>(!year||r[0].startsWith(year))&&(!q||r[1].toLowerCase().includes(q)||r[2].toLowerCase().includes(q)||(r[3]||"").toLowerCase().includes(q)||(r[4]||"").toLowerCase().includes(q)||(tab==="lain"&&(r[5]||"").toLowerCase().includes(q))||fmt(r[0]).toLowerCase().includes(q)));
   rows.sort((a,b)=>{const dt=a[0].localeCompare(b[0])*dateDir;if(sortK===0)return dt;const x=a[sortK]||"",y=b[sortK]||"";if(sortK===3&&(!x)!==(!y))return x?-1:1;const c=(sortK===2?x.localeCompare(y,"id",{numeric:true}):x.localeCompare(y,"id"))*sortDir;return c||dt});
   const pp=+$("pp").value,pages=Math.max(1,Math.ceil(rows.length/pp));
   if(page>pages)page=pages;
   const slice=rows.slice((page-1)*pp,page*pp);
-  $("body").innerHTML=slice.length?slice.map(r=>`<tr><td class="no"><span class="chip">${hl(r[2])}</span></td><td>${hl(r[1])}</td><td class="tgl">${fmt(r[0])}</td><td class="pw${r[3]?"":" na"}">${r[3]?r[3].split(" / ").map(pill).join(""):"–"}</td></tr>`).join(""):'<tr><td colspan="4" class="empty">Tidak ada data yang cocok.</td></tr>';
+  $("body").innerHTML=slice.length?slice.map(r=>`<tr><td class="no"><span class="chip">${hl(r[2])}</span></td><td>${hl(r[1])}</td><td class="lok">${r[4]?hl(r[4]):"–"}</td><td class="dk">${r[5]?`<span class="chip">${hl(r[5])}</span>`:"–"}</td><td class="tgl">${fmt(r[0])}</td><td class="pw${r[3]?"":" na"}">${r[3]?r[3].split(" / ").map(pill).join(""):"–"}</td></tr>`).join(""):'<tr><td colspan="6" class="empty">Tidak ada data yang cocok.</td></tr>';
   $("count").textContent=rows.length+" dari "+DATA.length+" SPK";
   $("pg").textContent="Halaman "+page+" / "+pages;
   $("prev").disabled=page<=1;$("next").disabled=page>=pages;
@@ -177,7 +188,7 @@ async function fetchAll(){
   if(SUPABASE_KEY.startsWith("eyJ"))H.Authorization="Bearer "+SUPABASE_KEY;
   const out=[],step=1000;
   for(let from=0;;from+=step){
-    const res=await fetch(SUPABASE_URL+"/rest/v1/spk?select=kelompok,tanggal,jenis_pekerjaan,no_spk,pengawas&order=tanggal.desc,id.asc",{headers:{...H,Range:from+"-"+(from+step-1)}});
+    const res=await fetch(SUPABASE_URL+"/rest/v1/spk?select=kelompok,tanggal,jenis_pekerjaan,no_spk,pengawas,lokasi,dikerjakan&order=tanggal.desc,id.asc",{headers:{...H,Range:from+"-"+(from+step-1)}});
     if(!res.ok)throw new Error("HTTP "+res.status);
     const part=await res.json();out.push(...part);
     if(part.length<step)break;
@@ -186,17 +197,17 @@ async function fetchAll(){
 }
 async function boot(){
   const body=$("body");
-  body.innerHTML='<tr><td colspan="4" class="empty">Memuat data dari Supabase…</td></tr>';
+  body.innerHTML='<tr><td colspan="6" class="empty">Memuat data dari Supabase…</td></tr>';
   try{
     const rows=await fetchAll();
-    DATASETS.manika=[];DATASETS.bangunan=[];
-    for(const r of rows){const t=DATASETS[r.kelompok];if(t)t.push(r.pengawas?[r.tanggal,r.jenis_pekerjaan,r.no_spk,r.pengawas]:[r.tanggal,r.jenis_pekerjaan,r.no_spk]);}
+    DATASETS.manika=[];DATASETS.bangunan=[];DATASETS.lain=[];
+    for(const r of rows){const t=DATASETS[r.kelompok];if(t)t.push([r.tanggal,r.jenis_pekerjaan,r.no_spk,r.pengawas||"",r.lokasi||"",r.dikerjakan||""]);}
     NAMES=[...new Set(Object.values(DATASETS).flat().filter(r=>r[3]).flatMap(r=>r[3].split(" / ")))].sort();
     document.querySelectorAll(".tab").forEach(b=>b.querySelector(".n").textContent=DATASETS[b.dataset.t].length);
     const t=DATASETS[location.hash.slice(1)]?location.hash.slice(1):"manika";
     setTab(t);
   }catch(e){
-    body.innerHTML='<tr><td colspan="4" class="empty">Data tidak bisa dimuat ('+esc(String(e.message||e))+'). <button class="icon" id="retry">Coba lagi</button></td></tr>';
+    body.innerHTML='<tr><td colspan="6" class="empty">Data tidak bisa dimuat ('+esc(String(e.message||e))+'). <button class="icon" id="retry">Coba lagi</button></td></tr>';
     $("retry").onclick=boot;
   }
 }
