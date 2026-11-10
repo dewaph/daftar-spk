@@ -1033,6 +1033,32 @@ html { overflow-x: hidden; }
 }
 #theme .i-sun { color: #fbbf24; }
 #theme .i-moon { color: #6366f1; }
+
+/* Pencarian dipindah ke tab "Cari" (paling kanan) */
+body:not(.mode-cari) .search-box { display: none; }
+.tab[data-t="cari"] { flex: 0 0 auto; padding-left: 22px; padding-right: 22px; }
+@media (max-width: 639px) {
+  .tab[data-t="cari"] { flex: 0 0 48px; padding: 10px 0; }
+  .tab[data-t="cari"] .lbl { display: none; }
+  .tab[data-t="cari"] svg { display: block; opacity: 1; width: 18px; height: 18px; }
+  .tab { font-size: 12.5px; gap: 4px; }
+  .tab .n { padding: 1px 5px; font-size: 10.5px; }
+}
+@media (max-width: 359px) {
+  .tab .n { display: none; }
+}
+@media (max-width: 399px) {
+  .tab:not([data-t="cari"]) { padding: 10px 2px; gap: 3px; font-size: 12px; }
+  .tab .n { padding: 1px 4px; font-size: 10px; }
+}
+
+/* Tab Cari = tombol buka/tutup pencarian; cakupan mengikuti tab kategori aktif */
+.tab[data-t="cari"].on {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: none;
+}
 </style>
 </head>
 <body>
@@ -1083,6 +1109,10 @@ html { overflow-x: hidden; }
     <button class="tab" role="tab" data-t="lain">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
       Lain-lain <span class="n">0</span>
+    </button>
+    <button class="tab" role="tab" data-t="cari" aria-label="Cari">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span class="lbl">Cari</span>
     </button>
   </div>
 
@@ -1146,23 +1176,42 @@ function setupYears(){
   $("yr").innerHTML='<option value="">Semua tahun</option>'+years.map(y=>`<option>${y}</option>`).join("");
 }
 
+let searchOpen=false;
+const LBL={manika:"Manika",bangunan:"Bangunan",lain:"Lain-lain"};
+
 function setTab(t){
   tab=t;
   DATA=DATASETS[t];
   document.querySelector("table").classList.toggle("lain",t==="lain");
   {const o=$("sb").querySelector('option[value="5"]');o.disabled=o.hidden=t!=="lain";}
-  query="";year="";page=1;sortK=0;sortDir=1;dateDir=-1;
-  $("q").value="";
-  $("clearQ").classList.remove("show");
+  const keep=searchOpen?$("q").value:"";
+  query=keep.trim();year="";page=1;sortK=0;sortDir=1;dateDir=-1;
+  $("q").value=keep;
+  $("q").placeholder="Cari di "+LBL[t]+"…";
+  $("clearQ").classList.toggle("show",keep.length>0);
   $("sd").value="-1";
   $("sb").value="0";
   setupYears();
-  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.t===t||(b.dataset.t==="cari"&&searchOpen)));
   try{history.replaceState(null,"","#"+t)}catch(e){}
   render();
 }
 
-document.querySelectorAll(".tab").forEach(b=>{b.onclick=()=>setTab(b.dataset.t)});
+function setSearch(open){
+  searchOpen=open;
+  document.body.classList.toggle("mode-cari",open);
+  const b=document.querySelector('.tab[data-t="cari"]');
+  b.classList.toggle("on",open);
+  b.setAttribute("aria-pressed",String(open));
+  if(open){$("q").focus();return}
+  if($("q").value||query){
+    $("q").value="";
+    $("clearQ").classList.remove("show");
+    query="";page=1;render();
+  }
+}
+
+document.querySelectorAll(".tab").forEach(b=>{b.onclick=()=>b.dataset.t==="cari"?setSearch(!searchOpen):setTab(b.dataset.t)});
 
 function render(){
   const q=query.toLowerCase();
@@ -1304,7 +1353,7 @@ async function boot(){
       }
     }
 
-    document.querySelectorAll(".tab").forEach(b=>b.querySelector(".n").textContent=DATASETS[b.dataset.t].length);
+    document.querySelectorAll(".tab").forEach(b=>{const n=b.querySelector(".n");if(n)n.textContent=DATASETS[b.dataset.t].length});
     const t=DATASETS[location.hash.slice(1)]?location.hash.slice(1):"manika";
     setTab(t);
   }catch(e){
