@@ -3,127 +3,1097 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Daftar SPK (Supabase)</title>
+<title>Daftar SPK — Portal Manajemen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
---bg:#f6f7f9;--card:#fff;--text:#1b2230;--muted:#6b7485;--line:#e3e6ec;--accent:#1f6feb;--accent-soft:#e8f0fe;--chip:#eef1f5}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#12151b;--card:#1b2029;--text:#e8ebf1;--muted:#98a1b3;--line:#2a313d;--accent:#6aa3ff;--accent-soft:#1f2d47;--chip:#252c38}}
-:root[data-theme="dark"]{color-scheme:dark;--bg:#12151b;--card:#1b2029;--text:#e8ebf1;--muted:#98a1b3;--line:#2a313d;--accent:#6aa3ff;--accent-soft:#1f2d47;--chip:#252c38}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:960px;margin:0 auto;padding:20px 16px 40px}
-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
-h1{font-size:22px;margin:0 0 2px}
-.sub{color:var(--muted);font-size:13px}
-button{font:inherit;color:inherit;cursor:pointer}
-.icon{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px}
-.tools{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:12px}
-@media(min-width:640px){.tools{grid-template-columns:repeat(4,1fr)}#q{grid-column:1/-1}}
-input,select{width:100%;font:inherit;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
-input:focus,select:focus{outline:2px solid var(--accent);outline-offset:-1px}
-.count{color:var(--muted);font-size:13px;margin:4px 2px 10px}
-.tablewrap{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px}
-table{width:100%;border-collapse:collapse;min-width:860px}
-th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:var(--card);cursor:pointer;user-select:none;white-space:nowrap;position:sticky;top:0}
-th.on{color:var(--accent)}
-tbody tr:last-child td{border-bottom:0}
-tbody tr:hover{background:var(--accent-soft)}
-td.tgl{white-space:nowrap;color:var(--muted)}
-td.no{white-space:nowrap}
-.chip{display:inline-block;background:var(--chip);border-radius:6px;padding:2px 8px;font-variant-numeric:tabular-nums;font-size:13px}
-mark{background:#ffd54a66;color:inherit;border-radius:3px}
-.empty{padding:32px;text-align:center;color:var(--muted)}
-.pager{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px}
-.pager button{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px}
-.pager button:disabled{opacity:.4;cursor:default}
-.tabs{display:flex;gap:4px;padding:4px;background:var(--chip);border-radius:12px;margin-bottom:14px}
-.tab{flex:1;border:0;background:transparent;border-radius:9px;padding:10px 14px;font-weight:600;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:8px}
-.tab.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
-.tab .n{font-size:12px;font-weight:600;background:var(--accent-soft);color:var(--accent);border-radius:99px;padding:1px 8px}
-td.pw{white-space:nowrap}
-.dk{display:none}
-table.lain .dk{display:table-cell}
-table.lain{min-width:1020px}
-.pb{display:inline-block;padding:2px 11px;border-radius:99px;font-size:13px;font-weight:600;line-height:1.5;background:hsl(var(--h) 80% 91%);color:hsl(var(--h) 65% 24%);border:1px solid hsl(var(--h) 60% 78%)}
-.pb+.pb{margin-left:4px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .pb{background:hsl(var(--h) 38% 22%);color:hsl(var(--h) 85% 83%);border-color:hsl(var(--h) 38% 34%)}}
-:root[data-theme="dark"] .pb{background:hsl(var(--h) 38% 22%);color:hsl(var(--h) 85% 83%);border-color:hsl(var(--h) 38% 34%)}
-td.pw.na{color:var(--muted)}
-.mobsort{display:none}
-@media(max-width:639px){
-.wrap{padding:14px 12px 32px}
-h1{font-size:20px}
-input,select{font-size:16px;padding:12px 14px;border-radius:12px}
-.mobsort{display:block}
-#pp{display:none}
-.tools{gap:8px;grid-template-columns:1fr 1fr}
-#q{grid-column:1/-1}
-#sb{grid-column:1/-1}
-.count{font-size:13px;margin:2px 2px 12px}
-.tablewrap{background:none;border:0;overflow:visible;border-radius:0}
-table{min-width:0}
-table,tbody,td{display:block;width:100%}
-thead{display:none}
-tbody tr{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;padding:13px 15px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-tbody tr:hover{background:var(--card)}
-tbody td{border:0;padding:0;white-space:normal}
-td.tgl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);padding-top:10px;border-top:1px solid var(--line)}
-td.tgl::before{content:"Tanggal"}
-td.lok{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);margin:-4px 0 10px}
-td.lok::before{content:"Lokasi"}
-table.lain td.dk{display:flex;align-items:center;gap:8px;font-size:13px;margin:-4px 0 10px}
-td.dk::before{content:"Dikerjakan"}
-td.pw::before{content:"Pengawas"}
-tbody td:nth-child(2){font-size:16px;font-weight:600;line-height:1.4;margin-bottom:10px}
-td.no{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:8px}
-td.no::before{content:"No SPK"}
-.chip{font-size:14px;font-weight:600;color:var(--text);background:var(--accent-soft);padding:5px 11px;border-radius:8px}
-td.tgl::before,td.pw::before,td.lok::before,td.dk::before{min-width:80px;font-size:12px;font-weight:400;color:var(--muted)}
-td.pw{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;font-size:14px;font-weight:600;padding-top:8px}
-td.pw .pb{font-size:14px;padding:3px 12px}
-.pb+.pb{margin-left:0}
-td.pw.na{display:none}
-td.empty{display:block;text-align:center;padding:28px 8px}
-.pager button{flex:1;padding:12px 14px;font-size:15px}
-.pager .sub{flex:0 0 auto}
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* Light Mode - Iridescent Pearl & Aurora Sky (Zero GPU Blur) */
+  --bg: #ecf1fb;
+  --bg-aurora:
+    radial-gradient(circle at 12% 8%, rgba(99, 102, 241, 0.26) 0%, transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(6, 182, 212, 0.24) 0%, transparent 45%),
+    radial-gradient(circle at 82% 78%, rgba(236, 72, 153, 0.16) 0%, transparent 48%),
+    radial-gradient(circle at 18% 82%, rgba(59, 130, 246, 0.18) 0%, transparent 45%),
+    linear-gradient(160deg, #e5edff 0%, #f1f5fd 48%, #e8f4fa 100%);
+
+  /* Faux-Frosted 3D Specular Glass Surfaces (0% GPU Blur) */
+  --glass-surface: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.72) 100%);
+  --glass-card: linear-gradient(145deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.78) 100%);
+  --glass-input: rgba(255, 255, 255, 0.86);
+  --glass-input-focus: #ffffff;
+  --glass-thead: #f4f7fc;
+
+  --text: #0f172a;
+  --text-secondary: #334155;
+  --muted: #64748b;
+
+  --border-outer: rgba(255, 255, 255, 0.92);
+  --border-subtle: rgba(148, 163, 184, 0.24);
+  --row-divider: rgba(15, 23, 42, 0.06);
+
+  --accent: #3b82f6;
+  --accent-indigo: #6366f1;
+  --accent-grad: linear-gradient(135deg, #2563eb 0%, #6366f1 55%, #0ea5e9 100%);
+  --accent-soft: rgba(59, 130, 246, 0.10);
+  --accent-glow: 0 6px 18px -4px rgba(59, 130, 246, 0.42), inset 0 1px 1px rgba(255, 255, 255, 0.38);
+
+  --chip-bg: linear-gradient(135deg, rgba(239, 246, 255, 0.96), rgba(224, 231, 255, 0.82));
+  --chip-border: rgba(99, 102, 241, 0.26);
+  --chip-text: #1e40af;
+
+  /* Maksimal 2 Layer Shadow: 1 Soft Drop Shadow + 1 Inset Specular Highlight */
+  --shadow-glass: 0 10px 28px -8px rgba(15, 23, 42, 0.07), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+  --shadow-sm: 0 3px 10px -2px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 }
-@media(max-width:639px){.tab{padding:10px 4px;font-size:14px;gap:5px}.tab .n{padding:1px 6px}}
-@media(max-width:639px){
-table.lain{min-width:0}
-table.lain tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"no dk" "title title" "lok tgl" "pw pw";column-gap:0;align-items:center}
-table.lain tbody tr>td{margin:0;min-width:0;width:auto}
-table.lain td.no{grid-area:no;margin-bottom:8px}
-table.lain tbody tr>td:nth-child(2){grid-area:title;margin-bottom:12px}
-table.lain td.dk{grid-area:dk;justify-self:end;margin:0 0 8px;font-size:12px}
-table.lain td.dk::before{content:"Oleh";min-width:0}
-table.lain td.dk .chip{font-weight:700;font-size:13px}
-table.lain td.lok{grid-area:lok;border-top:1px solid var(--line);padding-top:10px;font-size:13px}
-table.lain td.lok::before{min-width:0}
-table.lain td.tgl{grid-area:tgl;padding-left:12px;justify-content:flex-end;text-align:right;border-top:1px solid var(--line);padding-top:10px;font-size:13px}
-table.lain td.tgl::before{content:none}
-table.lain td.pw{grid-area:pw;padding-top:10px}
-table.lain td.empty{grid-column:1/-1}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #060a12;
+    --bg-aurora:
+      radial-gradient(circle at 14% 10%, rgba(79, 70, 229, 0.28) 0%, transparent 42%),
+      radial-gradient(circle at 86% 14%, rgba(6, 182, 212, 0.20) 0%, transparent 42%),
+      radial-gradient(circle at 80% 82%, rgba(168, 85, 247, 0.18) 0%, transparent 48%),
+      radial-gradient(circle at 15% 80%, rgba(14, 165, 233, 0.16) 0%, transparent 45%),
+      linear-gradient(160deg, #060a12 0%, #0b1222 50%, #090d1a 100%);
+
+    --glass-surface: linear-gradient(135deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.78) 100%);
+    --glass-card: linear-gradient(145deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.82) 100%);
+    --glass-input: rgba(15, 23, 42, 0.82);
+    --glass-input-focus: rgba(30, 41, 59, 0.96);
+    --glass-thead: #111a2e;
+
+    --text: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --muted: #94a3b8;
+
+    --border-outer: rgba(255, 255, 255, 0.13);
+    --border-subtle: rgba(255, 255, 255, 0.09);
+    --row-divider: rgba(255, 255, 255, 0.06);
+
+    --accent: #60a5fa;
+    --accent-indigo: #818cf8;
+    --accent-grad: linear-gradient(135deg, #3b82f6 0%, #6366f1 55%, #06b6d4 100%);
+    --accent-soft: rgba(59, 130, 246, 0.15);
+    --accent-glow: 0 6px 20px -4px rgba(59, 130, 246, 0.50), inset 0 1px 1px rgba(255, 255, 255, 0.32);
+
+    --chip-bg: linear-gradient(135deg, rgba(30, 58, 138, 0.65), rgba(49, 46, 129, 0.55));
+    --chip-border: rgba(96, 165, 250, 0.32);
+    --chip-text: #93c5fd;
+
+    --shadow-glass: 0 12px 30px -8px rgba(0, 0, 0, 0.50), inset 0 1px 1px rgba(255, 255, 255, 0.14);
+    --shadow-sm: 0 4px 10px -2px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+
+    --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  }
 }
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #060a12;
+  --bg-aurora:
+    radial-gradient(circle at 14% 10%, rgba(79, 70, 229, 0.28) 0%, transparent 42%),
+    radial-gradient(circle at 86% 14%, rgba(6, 182, 212, 0.20) 0%, transparent 42%),
+    radial-gradient(circle at 80% 82%, rgba(168, 85, 247, 0.18) 0%, transparent 48%),
+    radial-gradient(circle at 15% 80%, rgba(14, 165, 233, 0.16) 0%, transparent 45%),
+    linear-gradient(160deg, #060a12 0%, #0b1222 50%, #090d1a 100%);
+
+  --glass-surface: linear-gradient(135deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.78) 100%);
+  --glass-card: linear-gradient(145deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.82) 100%);
+  --glass-input: rgba(15, 23, 42, 0.82);
+  --glass-input-focus: rgba(30, 41, 59, 0.96);
+  --glass-thead: #111a2e;
+
+  --text: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --muted: #94a3b8;
+
+  --border-outer: rgba(255, 255, 255, 0.13);
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --row-divider: rgba(255, 255, 255, 0.06);
+
+  --accent: #60a5fa;
+  --accent-indigo: #818cf8;
+  --accent-grad: linear-gradient(135deg, #3b82f6 0%, #6366f1 55%, #06b6d4 100%);
+  --accent-soft: rgba(59, 130, 246, 0.15);
+  --accent-glow: 0 6px 20px -4px rgba(59, 130, 246, 0.50), inset 0 1px 1px rgba(255, 255, 255, 0.32);
+
+  --chip-bg: linear-gradient(135deg, rgba(30, 58, 138, 0.65), rgba(49, 46, 129, 0.55));
+  --chip-border: rgba(96, 165, 250, 0.32);
+  --chip-text: #93c5fd;
+
+  --shadow-glass: 0 12px 30px -8px rgba(0, 0, 0, 0.50), inset 0 1px 1px rgba(255, 255, 255, 0.14);
+  --shadow-sm: 0 4px 10px -2px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+  font: 500 14.5px/1.5 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Dedicated Hardware-Accelerated Static Aurora Layer (Zero Repaint on Scroll) */
+.aurora-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--bg-aurora);
+  transform: translateZ(0);
+}
+
+.wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 26px 18px 52px;
+}
+
+/* Header Glass Banner */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 18px 22px;
+  background: var(--glass-surface);
+  border: 1px solid var(--border-outer);
+  border-radius: 22px;
+  box-shadow: var(--shadow-glass);
+  position: relative;
+  overflow: hidden;
+}
+
+header::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  right: -10%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.16) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+}
+
+.brand-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--accent-grad);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  box-shadow: var(--accent-glow);
+  flex-shrink: 0;
+}
+
+.brand-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin: 0;
+  background: linear-gradient(135deg, var(--text) 20%, var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 9px;
+  border-radius: 99px;
+  background: rgba(16, 185, 129, 0.14);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.sub {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border-outer);
+  background: var(--glass-card);
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.icon-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+
+/* Segmented Glass Pill Tabs */
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: var(--glass-surface);
+  border: 1px solid var(--border-outer);
+  border-radius: 18px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-glass);
+}
+
+.tab {
+  flex: 1;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 13px;
+  padding: 11px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.tab svg {
+  width: 17px;
+  height: 17px;
+  opacity: 0.75;
+  flex-shrink: 0;
+}
+
+.tab:hover:not(.on) {
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.tab.on {
+  background: var(--accent-grad);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: var(--accent-glow);
+}
+
+.tab.on svg {
+  opacity: 1;
+}
+
+.tab .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  font-weight: 700;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 99px;
+  padding: 2px 8px;
+  line-height: 1.3;
+}
+
+.tab.on .n {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+/* Search & Filter Glass Bar */
+.tools {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+@media (min-width: 640px) {
+  .tools {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .search-box {
+    grid-column: 1 / -1;
+  }
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.clear-btn {
+  position: absolute;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: 0;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: none;
+  place-items: center;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.clear-btn.show {
+  display: grid;
+}
+
+input, select {
+  width: 100%;
+  font: inherit;
+  font-weight: 600;
+  color: var(--text);
+  background-color: var(--glass-input);
+  border: 1px solid var(--border-outer);
+  border-radius: 14px;
+  padding: 11px 14px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+#q {
+  padding-left: 44px;
+  padding-right: 40px;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: var(--select-arrow);
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+input::placeholder {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+input:focus, select:focus {
+  outline: none;
+  background-color: var(--glass-input-focus);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* Status Bar */
+.status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 4px 6px 12px;
+  gap: 8px;
+}
+
+.count {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.count::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+
+.reset-btn {
+  border: 1px solid var(--chip-border);
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 99px;
+  display: none;
+}
+
+.reset-btn.show {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Glass Table Container */
+.tablewrap {
+  overflow-x: auto;
+  background: var(--glass-surface);
+  border: 1px solid var(--border-outer);
+  border-radius: 20px;
+  box-shadow: var(--shadow-glass);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 860px;
+}
+
+th, td {
+  text-align: left;
+  padding: 13.5px 16px;
+  border-bottom: 1px solid var(--row-divider);
+  vertical-align: middle;
+}
+
+th {
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  background: var(--glass-thead);
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+th:hover {
+  color: var(--text);
+}
+
+th.on {
+  color: var(--accent);
+}
+
+th .ar {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 10px;
+}
+
+tbody tr {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 52px;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+tbody tr:hover {
+  background: var(--accent-soft);
+}
+
+/* Job Title Cell */
+tbody td:nth-child(2) {
+  font-weight: 600;
+  color: var(--text);
+}
+
+td.tgl {
+  white-space: nowrap;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+td.no {
+  white-space: nowrap;
+}
+
+td.lok {
+  color: var(--text-secondary);
+  font-size: 13.5px;
+}
+
+/* Frosted Monospace SPK Badge (Zero Box-Shadow on Repeated Items) */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  background: var(--chip-bg);
+  color: var(--chip-text);
+  border: 1px solid var(--chip-border);
+  border-radius: 9px;
+  padding: 3.5px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+mark {
+  background: rgba(250, 204, 21, 0.45);
+  color: inherit;
+  border-radius: 4px;
+  padding: 0 3px;
+  font-weight: 700;
+}
+
+.empty {
+  padding: 44px 20px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Pagination */
+.pager {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.pager button {
+  border: 1px solid var(--border-outer);
+  background: var(--glass-card);
+  border-radius: 13px;
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 13.5px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.pager button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+
+.pager button:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+
+.pager .sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: var(--glass-surface);
+  border: 1px solid var(--border-outer);
+}
+
+td.pw {
+  white-space: nowrap;
+}
+
+.dk {
+  display: none;
+}
+
+table.lain .dk {
+  display: table-cell;
+}
+
+table.lain {
+  min-width: 1020px;
+}
+
+/* Jewel-Toned Supervisor Pills with Dot Indicator (Zero Box-Shadow for 60FPS) */
+.pb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 11px;
+  border-radius: 99px;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.45;
+  background: linear-gradient(135deg, hsl(var(--h) 85% 94%), hsl(var(--h) 78% 88%));
+  color: hsl(var(--h) 72% 24%);
+  border: 1px solid hsl(var(--h) 65% 76%);
+}
+
+.pb::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(var(--h) 75% 42%);
+  flex-shrink: 0;
+}
+
+.pb + .pb {
+  margin-left: 5px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .pb {
+    background: linear-gradient(135deg, hsla(var(--h), 55%, 24%, 0.88), hsla(var(--h), 48%, 17%, 0.88));
+    color: hsl(var(--h) 90% 85%);
+    border-color: hsla(var(--h), 60%, 42%, 0.55);
+  }
+  :root:not([data-theme="light"]) .pb::before {
+    background: hsl(var(--h) 88% 66%);
+  }
+}
+
+:root[data-theme="dark"] .pb {
+  background: linear-gradient(135deg, hsla(var(--h), 55%, 24%, 0.88), hsla(var(--h), 48%, 17%, 0.88));
+  color: hsl(var(--h) 90% 85%);
+  border-color: hsla(var(--h), 60%, 42%, 0.55);
+}
+
+:root[data-theme="dark"] .pb::before {
+  background: hsl(var(--h) 88% 66%);
+}
+
+td.pw.na {
+  color: var(--muted);
+}
+
+/* Mobile Responsive Cards (60FPS Optimized) */
+@media (max-width: 639px) {
+  .wrap {
+    padding: 14px 12px 36px;
+  }
+  header {
+    padding: 14px 16px;
+    border-radius: 18px;
+    margin-bottom: 14px;
+  }
+  .brand-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+  h1 {
+    font-size: 19px;
+  }
+  .tabs {
+    padding: 5px;
+    gap: 5px;
+    border-radius: 15px;
+  }
+  .tab {
+    padding: 10px 6px;
+    font-size: 13px;
+    gap: 5px;
+    border-radius: 11px;
+  }
+  .tab svg {
+    display: none;
+  }
+  .tab .n {
+    padding: 1px 6px;
+    font-size: 11px;
+  }
+  input, select {
+    font-size: 15px;
+    padding: 11px 13px;
+    border-radius: 13px;
+  }
+  #q {
+    padding-left: 42px;
+  }
+  #pp {
+    display: none;
+  }
+  .tools {
+    gap: 8px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .search-box {
+    grid-column: 1 / -1;
+  }
+  #sb {
+    grid-column: 1 / -1;
+  }
+  .tablewrap {
+    background: none;
+    border: 0;
+    overflow: visible;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  table {
+    min-width: 0;
+  }
+  table, tbody, td {
+    display: block;
+    width: 100%;
+  }
+  thead {
+    display: none;
+  }
+  tbody tr {
+    display: flex;
+    flex-direction: column;
+    background: var(--glass-card);
+    border: 1px solid var(--border-outer);
+    border-radius: 18px;
+    padding: 15px 16px 15px 19px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+    content-visibility: auto;
+    contain-intrinsic-size: 0 150px;
+  }
+  tbody tr::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4.5px;
+    background: var(--accent-grad);
+  }
+  tbody tr:hover {
+    background: var(--glass-card);
+  }
+  tbody td {
+    border: 0;
+    padding: 0;
+    white-space: normal;
+  }
+  td.no {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin-bottom: 9px;
+  }
+  td.no::before {
+    content: "No. SPK";
+  }
+  tbody td:nth-child(2) {
+    font-size: 15.5px;
+    font-weight: 700;
+    line-height: 1.42;
+    margin-bottom: 11px;
+  }
+  td.lok {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: -2px 0 10px;
+  }
+  td.lok::before {
+    content: "Lokasi";
+  }
+  table.lain td.dk {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    margin: -2px 0 10px;
+  }
+  td.dk::before {
+    content: "Dikerjakan";
+  }
+  td.tgl {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--muted);
+    padding-top: 10px;
+    border-top: 1px solid var(--row-divider);
+  }
+  td.tgl::before {
+    content: "Tanggal";
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  td.pw::before {
+    content: "Pengawas";
+  }
+  td.tgl::before, td.pw::before, td.lok::before, td.dk::before {
+    min-width: 78px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  td.pw {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    padding-top: 9px;
+  }
+  .pb + .pb {
+    margin-left: 0;
+  }
+  td.pw.na {
+    display: none;
+  }
+  td.empty {
+    display: block;
+    text-align: center;
+    padding: 36px 14px;
+    background: var(--glass-card);
+    border: 1px solid var(--border-outer);
+    border-radius: 18px;
+  }
+  .pager button {
+    flex: 1;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  .pager .sub {
+    flex: 0 0 auto;
+  }
+  /* Grid khusus Tab Lain-lain di Mobile */
+  table.lain {
+    min-width: 0;
+  }
+  table.lain tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "no dk"
+      "title title"
+      "lok tgl"
+      "pw pw";
+    column-gap: 0;
+    align-items: center;
+  }
+  table.lain tbody tr > td {
+    margin: 0;
+    min-width: 0;
+    width: auto;
+  }
+  table.lain td.no {
+    grid-area: no;
+    justify-content: flex-start;
+    margin-bottom: 9px;
+  }
+  table.lain td.no::before {
+    display: none;
+  }
+  table.lain tbody tr > td:nth-child(2) {
+    grid-area: title;
+    margin-bottom: 12px;
+  }
+  table.lain td.dk {
+    grid-area: dk;
+    justify-self: end;
+    margin: 0 0 9px;
+    font-size: 12px;
+  }
+  table.lain td.dk::before {
+    content: "Oleh";
+    min-width: 0;
+  }
+  table.lain td.lok {
+    grid-area: lok;
+    border-top: 1px solid var(--row-divider);
+    padding-top: 10px;
+    font-size: 13px;
+  }
+  table.lain td.lok::before {
+    min-width: 0;
+  }
+  table.lain td.tgl {
+    grid-area: tgl;
+    padding-left: 12px;
+    justify-content: flex-end;
+    text-align: right;
+    border-top: 1px solid var(--row-divider);
+    padding-top: 10px;
+    font-size: 12.5px;
+  }
+  table.lain td.tgl::before {
+    content: none;
+  }
+  table.lain td.pw {
+    grid-area: pw;
+    padding-top: 10px;
+  }
+  table.lain td.empty {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Tab ikut scroll (sticky, tanpa blur agar tetap 60 FPS) */
+.tabs {
+  position: sticky;
+  top: calc(8px + env(safe-area-inset-top, 0px));
+  z-index: 20;
+  background: var(--glass-surface), var(--bg);
+}
+@media (max-width: 639px) {
+  .tabs { top: calc(6px + env(safe-area-inset-top, 0px)); }
+}
+
+/* Pas layar HP: tanpa geser kanan-kiri */
+html { overflow-x: hidden; }
+@media (max-width: 639px) {
+  html, body { max-width: 100%; }
+  .wrap { width: 100%; max-width: 100%; }
+  header { gap: 10px; }
+  .brand { min-width: 0; flex: 1 1 auto; }
+  .brand > div:last-child { min-width: 0; }
+  .brand-title-row { flex-wrap: wrap; gap: 4px 8px; }
+  .sub { overflow-wrap: anywhere; }
+  .icon-btn { flex: none; }
+  .tab { min-width: 0; white-space: nowrap; }
+  .tools { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .tools > * { min-width: 0; }
+  input, select { min-width: 0; max-width: 100%; width: 100%; text-overflow: ellipsis; }
+  select { font-size: 14px; padding-right: 34px; }
+  .status-bar { flex-wrap: wrap; gap: 8px; }
+  .pager { flex-wrap: wrap; min-width: 0; }
+  tbody td, .pb { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+}
+@media (max-width: 360px) {
+  .tab { font-size: 12px; padding: 9px 4px; gap: 4px; }
+  .tab .n { padding: 1px 5px; font-size: 10.5px; }
+  h1 { font-size: 17px; }
+}
+
+/* Ikon tema: bulan saat terang (menuju gelap), matahari saat gelap (menuju terang) */
+#theme svg { display: block; }
+#theme .i-sun { display: none; }
+:root[data-theme="dark"] #theme .i-sun { display: block; }
+:root[data-theme="dark"] #theme .i-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) #theme .i-sun { display: block; }
+  :root:not([data-theme="light"]) #theme .i-moon { display: none; }
+}
+#theme .i-sun { color: #fbbf24; }
+#theme .i-moon { color: #6366f1; }
 </style>
 </head>
 <body>
+<div class="aurora-bg" aria-hidden="true"></div>
 <div class="wrap">
   <header>
-    <div>
-      <h1>Daftar SPK</h1>
-      <div class="sub">No SPK, jenis pekerjaan, tanggal, dan pengawas</div>
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <line x1="10" y1="9" x2="8" y2="9"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title-row">
+          <h1>Daftar SPK</h1>
+          <span class="live-badge"><span class="live-dot"></span>Live Data</span>
+        </div>
+        <div class="sub">Monitoring Surat Perintah Kerja, lokasi &amp; pengawas</div>
+      </div>
     </div>
-    <button class="icon" id="theme" aria-label="Ganti tema">◐</button>
+    <button class="icon-btn" id="theme" aria-label="Ganti ke mode gelap" title="Ganti Tema Terang/Gelap">
+      <svg class="i-moon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="i-sun" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2"/><path d="M12 20v2"/>
+        <path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/>
+        <path d="M2 12h2"/><path d="M20 12h2"/>
+        <path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+      </svg>
+    </button>
   </header>
+
   <div class="tabs" role="tablist">
-    <button class="tab on" role="tab" data-t="manika">Manika <span class="n"></span></button>
-    <button class="tab" role="tab" data-t="bangunan">Bangunan <span class="n"></span></button>
-    <button class="tab" role="tab" data-t="lain">Lain-lain <span class="n"></span></button>
+    <button class="tab on" role="tab" data-t="manika">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+      Manika <span class="n">0</span>
+    </button>
+    <button class="tab" role="tab" data-t="bangunan">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+      Bangunan <span class="n">0</span>
+    </button>
+    <button class="tab" role="tab" data-t="lain">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      Lain-lain <span class="n">0</span>
+    </button>
   </div>
+
   <div class="tools">
-    <input id="q" type="search" placeholder="Cari jenis pekerjaan atau nomor SPK…" autocomplete="off">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input id="q" type="search" placeholder="Cari jenis pekerjaan, nomor SPK, lokasi, atau pengawas…" autocomplete="off">
+      <button type="button" class="clear-btn" id="clearQ" aria-label="Hapus pencarian">×</button>
+    </div>
     <select id="yr" aria-label="Filter tahun"></select>
     <select id="sd" aria-label="Urutan tanggal"><option value="-1">Tanggal: terbaru dulu</option><option value="1">Tanggal: terlama dulu</option></select>
     <select id="sb" aria-label="Urut berdasarkan"><option value="0">Urut: Tanggal</option><option value="3">Urut: Pengawas</option><option value="2">Urut: No SPK</option><option value="1">Urut: Pekerjaan</option><option value="4">Urut: Lokasi</option><option value="5" disabled hidden>Urut: Dikerjakan</option></select>
@@ -131,7 +1101,12 @@ table.lain td.empty{grid-column:1/-1}
       <option value="25">25 per halaman</option><option value="50">50 per halaman</option><option value="100">100 per halaman</option>
     </select>
   </div>
-  <div class="count" id="count"></div>
+
+  <div class="status-bar">
+    <div class="count" id="count">Memuat data…</div>
+    <button type="button" class="reset-btn" id="resetFilter">Reset Filter ×</button>
+  </div>
+
   <div class="tablewrap">
     <table>
       <thead><tr>
@@ -145,12 +1120,14 @@ table.lain td.empty{grid-column:1/-1}
       <tbody id="body"></tbody>
     </table>
   </div>
+
   <div class="pager">
     <button id="prev">‹ Sebelumnya</button>
-    <span class="sub" id="pg"></span>
+    <span class="sub" id="pg">Halaman 1 / 1</span>
     <button id="next">Berikutnya ›</button>
   </div>
 </div>
+
 <script>
 const SUPABASE_URL="https://alnmjxyyfhkytwkwzpon.supabase.co";
 const SUPABASE_KEY="sb_publishable_DaL5YRZ7cIVN52tEiz3REw_u2s9Pu2g";
@@ -160,42 +1137,126 @@ const $=id=>document.getElementById(id);
 const bulan=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
 const fmt=s=>{const [y,m,d]=s.split("-");return d+" "+bulan[+m-1]+" "+y};
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let NAMES=[];
-const hue=n=>Math.round(NAMES.indexOf(n)*137.508)%360;
-const pill=n=>`<span class="pb" style="--h:${hue(n)}">${hl(n)}</span>`;
+
+let HUE_MAP=Object.create(null);
 let sortK=0,sortDir=1,dateDir=-1,page=1,query="",year="";
-function setupYears(){const years=[...new Set(DATA.map(r=>r[0].slice(0,4)))].sort().reverse();
-$("yr").innerHTML='<option value="">Semua tahun</option>'+years.map(y=>`<option>${y}</option>`).join("");}
-function setTab(t){tab=t;DATA=DATASETS[t];document.querySelector("table").classList.toggle("lain",t==="lain");{const o=$("sb").querySelector('option[value="5"]');o.disabled=o.hidden=t!=="lain";}query="";year="";page=1;sortK=0;sortDir=1;dateDir=-1;$("q").value="";$("sd").value="-1";$("sb").value="0";setupYears();
-document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
-try{history.replaceState(null,"","#"+t)}catch(e){}render();}
-document.querySelectorAll(".tab").forEach(b=>{b.onclick=()=>setTab(b.dataset.t)});
-function hl(t){
-  const e=esc(t);
-  if(!query)return e;
-  const q=esc(query).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-  return e.replace(new RegExp(q,"gi"),m=>"<mark>"+m+"</mark>");
+
+function setupYears(){
+  const years=[...new Set(DATA.map(r=>r[0].slice(0,4)))].sort().reverse();
+  $("yr").innerHTML='<option value="">Semua tahun</option>'+years.map(y=>`<option>${y}</option>`).join("");
 }
+
+function setTab(t){
+  tab=t;
+  DATA=DATASETS[t];
+  document.querySelector("table").classList.toggle("lain",t==="lain");
+  {const o=$("sb").querySelector('option[value="5"]');o.disabled=o.hidden=t!=="lain";}
+  query="";year="";page=1;sortK=0;sortDir=1;dateDir=-1;
+  $("q").value="";
+  $("clearQ").classList.remove("show");
+  $("sd").value="-1";
+  $("sb").value="0";
+  setupYears();
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.t===t));
+  try{history.replaceState(null,"","#"+t)}catch(e){}
+  render();
+}
+
+document.querySelectorAll(".tab").forEach(b=>{b.onclick=()=>setTab(b.dataset.t)});
+
 function render(){
   const q=query.toLowerCase();
-  let rows=DATA.filter(r=>(!year||r[0].startsWith(year))&&(!q||r[1].toLowerCase().includes(q)||r[2].toLowerCase().includes(q)||(r[3]||"").toLowerCase().includes(q)||(r[4]||"").toLowerCase().includes(q)||(tab==="lain"&&(r[5]||"").toLowerCase().includes(q))||fmt(r[0]).toLowerCase().includes(q)));
-  rows.sort((a,b)=>{const dt=a[0].localeCompare(b[0])*dateDir;if(sortK===0)return dt;const x=a[sortK]||"",y=b[sortK]||"";if(sortK===3&&(!x)!==(!y))return x?-1:1;const c=(sortK===2?x.localeCompare(y,"id",{numeric:true}):x.localeCompare(y,"id"))*sortDir;return c||dt});
+  let rows=DATA.filter(r=>(!year||r[0].startsWith(year))&&(!q||r[7].includes(q)));
+  rows.sort((a,b)=>{
+    const dt=a[0].localeCompare(b[0])*dateDir;
+    if(sortK===0)return dt;
+    const x=a[sortK]||"",y=b[sortK]||"";
+    if(sortK===3&&(!x)!==(!y))return x?-1:1;
+    const c=(sortK===2?x.localeCompare(y,"id",{numeric:true}):x.localeCompare(y,"id"))*sortDir;
+    return c||dt;
+  });
+
   const pp=+$("pp").value,pages=Math.max(1,Math.ceil(rows.length/pp));
   if(page>pages)page=pages;
   const slice=rows.slice((page-1)*pp,page*pp);
-  $("body").innerHTML=slice.length?slice.map(r=>`<tr><td class="no"><span class="chip">${hl(r[2])}</span></td><td>${hl(r[1])}</td><td class="lok">${r[4]?hl(r[4]):"–"}</td><td class="dk">${r[5]?`<span class="chip">${hl(r[5])}</span>`:"–"}</td><td class="tgl">${fmt(r[0])}</td><td class="pw${r[3]?"":" na"}">${r[3]?r[3].split(" / ").map(pill).join(""):"–"}</td></tr>`).join(""):'<tr><td colspan="6" class="empty">Tidak ada data yang cocok.</td></tr>';
-  $("count").textContent=rows.length+" dari "+DATA.length+" SPK";
+
+  // Kompilasi RegExp cukup SATU KALI per render(), atau gunakan esc() instan saat tidak ada pencarian
+  const rx=q?new RegExp(esc(query).replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"gi"):null;
+  const hl=rx?(t=>esc(t).replace(rx,m=>"<mark>"+m+"</mark>")):esc;
+
+  $("body").innerHTML=slice.length
+    ? slice.map(r=>{
+        // Gunakan HTML pengawas pre-computed saat tidak ada query pencarian agar super cepat
+        const pwHtml=r[8].length
+          ? (rx?r[8].map(n=>`<span class="pb" style="--h:${HUE_MAP[n]}">${hl(n)}</span>`).join(""):r[9])
+          : "–";
+        return `<tr><td class="no"><span class="chip">${hl(r[2])}</span></td><td>${hl(r[1])}</td><td class="lok">${r[4]?hl(r[4]):"–"}</td><td class="dk">${r[5]?`<span class="chip">${hl(r[5])}</span>`:"–"}</td><td class="tgl">${rx?hl(r[6]):r[6]}</td><td class="pw${r[8].length?"":" na"}">${pwHtml}</td></tr>`;
+      }).join("")
+    : '<tr><td colspan="6" class="empty">Tidak ada data SPK yang cocok dengan pencarian Anda.</td></tr>';
+
+  $("count").textContent=`Menampilkan ${rows.length} dari ${DATA.length} SPK`;
+  $("resetFilter").classList.toggle("show", Boolean(query || year));
   $("pg").textContent="Halaman "+page+" / "+pages;
-  $("prev").disabled=page<=1;$("next").disabled=page>=pages;
-  document.querySelectorAll("th").forEach(th=>{const on=+th.dataset.k===sortK;th.classList.toggle("on",on);th.querySelector(".ar").textContent=on?((sortK===0?dateDir:sortDir)>0?"▲":"▼"):""});$("sd").value=String(dateDir);$("sb").value=String(sortK);
+  $("prev").disabled=page<=1;
+  $("next").disabled=page>=pages;
+  document.querySelectorAll("th").forEach(th=>{
+    const on=+th.dataset.k===sortK;
+    th.classList.toggle("on",on);
+    th.querySelector(".ar").textContent=on?((sortK===0?dateDir:sortDir)>0?"▲":"▼"):"";
+  });
+  $("sd").value=String(dateDir);
+  $("sb").value=String(sortK);
 }
-$("q").addEventListener("input",e=>{query=e.target.value.trim();page=1;render()});
+
+let qTimer;
+$("q").addEventListener("input",e=>{
+  const val=e.target.value;
+  $("clearQ").classList.toggle("show", val.length>0);
+  clearTimeout(qTimer);
+  qTimer=setTimeout(()=>{query=val.trim();page=1;render()},90);
+});
+
+$("clearQ").onclick=()=>{
+  $("q").value="";
+  $("clearQ").classList.remove("show");
+  query="";
+  page=1;
+  render();
+  $("q").focus();
+};
+
+$("resetFilter").onclick=()=>{
+  $("q").value="";
+  $("yr").value="";
+  $("clearQ").classList.remove("show");
+  query="";
+  year="";
+  page=1;
+  render();
+};
+
 $("yr").addEventListener("change",e=>{year=e.target.value;page=1;render()});
 $("pp").addEventListener("change",()=>{page=1;render()});
 $("prev").onclick=()=>{page--;render();scrollTo(0,0)};
 $("next").onclick=()=>{page++;render();scrollTo(0,0)};
-document.querySelectorAll("th").forEach(th=>th.onclick=()=>{const k=+th.dataset.k;if(k===0){if(sortK===0)dateDir*=-1;sortK=0}else if(sortK===k)sortDir*=-1;else{sortK=k;sortDir=1}page=1;render()});
-$("theme").onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=dark?"light":"dark"};
+
+document.querySelectorAll("th").forEach(th=>th.onclick=()=>{
+  const k=+th.dataset.k;
+  if(k===0){if(sortK===0)dateDir*=-1;sortK=0}
+  else if(sortK===k)sortDir*=-1;
+  else{sortK=k;sortDir=1}
+  page=1;
+  render();
+});
+
+$("theme").onclick=()=>{
+  const r=document.documentElement;
+  const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  r.dataset.theme=dark?"light":"dark";
+  $("theme").setAttribute("aria-label",dark?"Ganti ke mode gelap":"Ganti ke mode terang");
+};
+(()=>{const d=matchMedia("(prefers-color-scheme:dark)").matches;$("theme").setAttribute("aria-label",d?"Ganti ke mode terang":"Ganti ke mode gelap")})();
+
 $("sd").addEventListener("change",e=>{dateDir=+e.target.value;page=1;render()});
 $("sb").addEventListener("change",e=>{sortK=+e.target.value;sortDir=1;page=1;render()});
 
@@ -211,19 +1272,43 @@ async function fetchAll(){
   }
   return out;
 }
+
 async function boot(){
   const body=$("body");
-  body.innerHTML='<tr><td colspan="6" class="empty">Memuat data dari Supabase…</td></tr>';
+  body.innerHTML='<tr><td colspan="6" class="empty">Memuat data SPK dari Supabase…</td></tr>';
   try{
     const rows=await fetchAll();
     DATASETS.manika=[];DATASETS.bangunan=[];DATASETS.lain=[];
-    for(const r of rows){const t=DATASETS[r.kelompok];if(t)t.push([r.tanggal,r.jenis_pekerjaan,r.no_spk,r.pengawas||"",r.lokasi||"",r.dikerjakan||""]);}
-    NAMES=[...new Set(Object.values(DATASETS).flat().filter(r=>r[3]).flatMap(r=>r[3].split(" / ")))].sort();
+
+    // Kumpulkan dan urutkan semua nama pengawas terlebih dahulu untuk HUE_MAP O(1)
+    const nameSet=new Set();
+    for(const r of rows){
+      if(r.pengawas){
+        for(const n of r.pengawas.split(" / "))if(n)nameSet.add(n);
+      }
+    }
+    const sortedNames=[...nameSet].sort();
+    HUE_MAP=Object.create(null);
+    sortedNames.forEach((n,i)=>{HUE_MAP[n]=Math.round(i*137.508)%360});
+
+    // Pre-compute tanggal, string pencarian, array pengawas, dan HTML statis pengawas
+    for(const r of rows){
+      const t=DATASETS[r.kelompok];
+      if(t){
+        const fDate=fmt(r.tanggal);
+        const pwStr=r.pengawas||"";
+        const pwList=pwStr?pwStr.split(" / "):[];
+        const pwStaticHtml=pwList.length?pwList.map(n=>`<span class="pb" style="--h:${HUE_MAP[n]}">${esc(n)}</span>`).join(""):"–";
+        const searchStr=[r.jenis_pekerjaan,r.no_spk,pwStr,r.lokasi||"",r.kelompok==="lain"?(r.dikerjakan||""):"",fDate].join(" ").toLowerCase();
+        t.push([r.tanggal,r.jenis_pekerjaan,r.no_spk,pwStr,r.lokasi||"",r.dikerjakan||"",fDate,searchStr,pwList,pwStaticHtml]);
+      }
+    }
+
     document.querySelectorAll(".tab").forEach(b=>b.querySelector(".n").textContent=DATASETS[b.dataset.t].length);
     const t=DATASETS[location.hash.slice(1)]?location.hash.slice(1):"manika";
     setTab(t);
   }catch(e){
-    body.innerHTML='<tr><td colspan="6" class="empty">Data tidak bisa dimuat ('+esc(String(e.message||e))+'). <button class="icon" id="retry">Coba lagi</button></td></tr>';
+    body.innerHTML='<tr><td colspan="6" class="empty">Data tidak bisa dimuat ('+esc(String(e.message||e))+'). <button class="icon-btn" id="retry" style="display:inline-grid;width:auto;padding:0 14px;margin-left:8px">Coba lagi</button></td></tr>';
     $("retry").onclick=boot;
   }
 }
