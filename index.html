@@ -606,6 +606,79 @@ mark {
   font-weight: 600;
 }
 
+/* ===== Layar loading data (gaya Outstanding) ===== */
+#boot {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: var(--bg);
+  background-image: var(--bg-aurora);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) 16px calc(16px + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+#boot.done { opacity: 0; visibility: hidden; pointer-events: none; }
+.bk-box { display: grid; justify-items: center; gap: 16px; width: min(300px, 100%); }
+.bk-art {
+  width: 132px;
+  height: 132px;
+  display: grid;
+  place-items: center;
+  background: var(--glass-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 28px;
+  box-shadow: var(--shadow-glass);
+}
+.bk-art svg { width: 88px; height: 88px; overflow: visible; }
+.bk-art .soft { fill: var(--accent-soft); }
+.bk-art .acc { fill: var(--accent); }
+.bk-art .ln { fill: none; stroke: var(--accent); stroke-linecap: round; stroke-linejoin: round; }
+.bk-art .anim { transform-box: fill-box; transform-origin: center; }
+/* Alat kerja: gerigi berputar, kunci inggris mengayun */
+.bk-art .gear { animation: bkgear 7s linear infinite; }
+.bk-art .wrench { animation: bkwrench 1.6s ease-in-out infinite; }
+@keyframes bkgear { to { transform: rotate(360deg); } }
+@keyframes bkwrench { 0%, 100% { transform: rotate(-16deg); } 50% { transform: rotate(16deg); } }
+/* SPK: baris dokumen tertulis satu per satu, lalu tercentang */
+.bk-art .dl { transform-box: fill-box; transform-origin: left center; animation: bkline 2.6s ease-in-out infinite; animation-delay: calc(var(--d) * 0.28s); }
+.bk-art .dck { animation: bkcheck 2.6s ease-in-out infinite; }
+@keyframes bkline {
+  0% { transform: scaleX(0); opacity: 1; }
+  35%, 85% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+@keyframes bkcheck {
+  0%, 50% { transform: scale(0); }
+  65% { transform: scale(1.25); }
+  75%, 90% { transform: scale(1); }
+  100% { transform: scale(0); }
+}
+
+#boot .bk-t { margin: 0; font-size: 18px; font-weight: 800; letter-spacing: -0.015em; }
+#boot .bk-s { margin: 0; color: var(--muted); font-size: 13.5px; font-weight: 500; min-height: 1.4em; transition: opacity 0.2s; }
+.bk-bar { position: relative; width: 100%; height: 5px; border-radius: 999px; background: var(--border-subtle); overflow: hidden; }
+.bk-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  border-radius: 999px;
+  background: var(--accent);
+  animation: bkbar 1.2s ease-in-out infinite;
+}
+@keyframes bkbar { from { left: -40%; } to { left: 100%; } }
+@media (prefers-reduced-motion: reduce) {
+  .bk-bar::after { left: 0; width: 100%; animation: none; }
+  .bk-art .anim { animation: none; }
+  .bk-art .dck { transform: scale(1); }
+}
+
 /* Pagination */
 .pager {
   display: flex;
@@ -1062,6 +1135,7 @@ body:not(.mode-cari) .search-box { display: none; }
 </style>
 </head>
 <body>
+<div id="boot" role="status" aria-live="polite"><div class="bk-box"><div class="bk-art"><svg viewBox="0 0 80 80" aria-hidden="true"><rect class="soft" x="16" y="6" width="48" height="66" rx="8"/><rect class="ln" x="16" y="6" width="48" height="66" rx="8" stroke-width="3"/><rect class="acc dl" style="--d:0" x="25" y="18" width="30" height="5" rx="2.5"/><rect class="acc dl" style="--d:1" x="25" y="29" width="30" height="5" rx="2.5"/><rect class="acc dl" style="--d:2" x="25" y="40" width="22" height="5" rx="2.5"/><rect class="acc dl" style="--d:3" x="25" y="51" width="26" height="5" rx="2.5"/><g class="anim dck"><circle class="acc" cx="58" cy="62" r="13"/><path d="M52 62.5l4.2 4.2 7.8-8.6" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></g></svg></div><h2 class="bk-t">Memuat data SPK</h2><p class="bk-s" id="lds">Menghubungi server...</p><div class="bk-bar" aria-hidden="true"></div></div></div>
 <div class="aurora-bg" aria-hidden="true"></div>
 <div class="wrap">
   <header>
@@ -1305,6 +1379,9 @@ $("theme").onclick=()=>{
   $("theme").setAttribute("aria-label",dark?"Ganti ke mode gelap":"Ganti ke mode terang");
 };
 (()=>{const d=matchMedia("(prefers-color-scheme:dark)").matches;$("theme").setAttribute("aria-label",d?"Ganti ke mode terang":"Ganti ke mode gelap")})();
+/* Saat dibuka di dalam menu utama: ikuti tema menu, tombol tema sendiri disembunyikan */
+window.addEventListener("message",e=>{const d=e.data;if(e.source===window.parent&&d&&d.type==="theme"&&(d.theme==="dark"||d.theme==="light")){document.documentElement.dataset.theme=d.theme;$("theme").setAttribute("aria-label",d.theme==="dark"?"Ganti ke mode terang":"Ganti ke mode gelap")}});
+if(window.parent!==window)$("theme").style.display="none";
 
 $("sd").addEventListener("change",e=>{dateDir=+e.target.value;page=1;render()});
 $("sb").addEventListener("change",e=>{sortK=+e.target.value;sortDir=1;page=1;render()});
@@ -1322,9 +1399,15 @@ async function fetchAll(){
   return out;
 }
 
+const bootMs=["Menghubungi server...","Membaca data SPK...","Menyusun daftar SPK...","Hampir selesai..."];let bootI=0,bootT=null,bootF=null;
+function bootShow(on){const b=$("boot"),e=$("lds");if(!b)return;clearInterval(bootT);clearTimeout(bootF);b.classList.toggle("done",!on);
+  if(on){bootI=0;if(e){e.textContent=bootMs[0];e.style.opacity=1}
+    bootT=setInterval(()=>{bootI=Math.min(bootI+1,bootMs.length-1);if(e){e.style.opacity=0;setTimeout(()=>{e.textContent=bootMs[bootI];e.style.opacity=1},200)}},1800);
+    bootF=setTimeout(()=>b.classList.add("done"),25000)}}
 async function boot(){
   const body=$("body");
   body.innerHTML='<tr><td colspan="6" class="empty">Memuat data SPK dari Supabase…</td></tr>';
+  bootShow(true);
   try{
     const rows=await fetchAll();
     DATASETS.manika=[];DATASETS.bangunan=[];DATASETS.lain=[];
@@ -1359,7 +1442,7 @@ async function boot(){
   }catch(e){
     body.innerHTML='<tr><td colspan="6" class="empty">Data tidak bisa dimuat ('+esc(String(e.message||e))+'). <button class="icon-btn" id="retry" style="display:inline-grid;width:auto;padding:0 14px;margin-left:8px">Coba lagi</button></td></tr>';
     $("retry").onclick=boot;
-  }
+  }finally{bootShow(false)}
 }
 boot();
 </script>
