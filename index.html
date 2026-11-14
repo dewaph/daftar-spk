@@ -1139,6 +1139,11 @@ body:not(.mode-cari) .search-box { display: none; }
   border-color: var(--accent);
   box-shadow: none;
 }
+
+/* Versi PWA (terinstal): matikan tarik-untuk-refresh */
+@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+  html, body { overscroll-behavior-y: none; }
+}
 </style>
 </head>
 <body>
@@ -1452,6 +1457,13 @@ async function boot(){
   }finally{bootShow(false)}
 }
 boot();
+/* Versi PWA (terinstal): blokir refresh lewat keyboard (F5, Ctrl/Cmd+R) */
+if(matchMedia("(display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui)").matches||navigator.standalone){
+  window.addEventListener("keydown",e=>{
+    const k=e.key.toLowerCase();
+    if(k==="f5"||((e.ctrlKey||e.metaKey)&&k==="r"))e.preventDefault();
+  });
+}
 if("serviceWorker" in navigator&&location.protocol!=="file:"){
   window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).catch(()=>{})});
 }
